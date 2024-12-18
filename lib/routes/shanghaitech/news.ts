@@ -4,7 +4,7 @@ import { load } from 'cheerio';
 import { parseDate } from '@/utils/parse-date';
 
 export const route: Route = {
-    path: '/:category?',
+    path: '/:category((?!slst).)*',
     categories: ['university'],
     example: '/shanghaitech/1004',
     parameters: { 
@@ -25,7 +25,7 @@ export const route: Route = {
         },
     ],
     name: 'University Updates',
-    maintainers: ['YourGitHubUsername'],
+    maintainers: ['Jaaayden'],
     handler: async (ctx) => {
         const { category = '1001' } = ctx.req.param();
         const baseUrl = 'https://www.shanghaitech.edu.cn';

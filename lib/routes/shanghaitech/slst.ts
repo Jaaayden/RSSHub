@@ -28,7 +28,9 @@ export const route: Route = {
     name: 'SLST News',
     maintainers: ['Jaaayden'],
     handler: async (ctx) => {
-        const { type = 'news' } = ctx.req.param();
+        const path = ctx.req.path();
+        const type = path === '/slst' ? 'news' : path.split('/')[2] || 'news';
+        
         const baseUrl = 'https://slst.shanghaitech.edu.cn';
         
         // Map type to actual URL path
