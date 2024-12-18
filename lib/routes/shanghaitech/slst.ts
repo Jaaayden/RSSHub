@@ -8,8 +8,8 @@ export const route: Route = {
     path: '/slst/:type?',
     categories: ['university'],
     example: '/shanghaitech/slst/news',
-    parameters: { 
-        type: 'Type of posts, see below:\n  - `news`: 学院新闻\n  - `research`: 科研进展\n  - `notice`: 通知公告\n  Default is news' 
+    parameters: {
+        type: 'Type of posts, see below:\n  - `news`: 学院新闻\n  - `research`: 科研进展\n  - `notice`: 通知公告\n  Default is news',
     },
     features: {
         requireConfig: false,
@@ -28,18 +28,16 @@ export const route: Route = {
     name: 'SLST News',
     maintainers: ['Jaaayden'],
     handler: async (ctx) => {
-        const path = ctx.req.path();
-        const type = path === '/slst' ? 'news' : path.split('/')[2] || 'news';
-        
+        const { type = 'news' } = ctx.req.param();
         const baseUrl = 'https://slst.shanghaitech.edu.cn';
-        
+
         // Map type to actual URL path
         const pathMap = {
             news: '/news/list.htm',
             research: '/researchprogress/list.htm',
             notice: '/notice/list.htm',
         };
-        
+
         const pageUrl = `${baseUrl}${pathMap[type] || pathMap.news}`;
 
         const response = await got(pageUrl);
@@ -56,11 +54,7 @@ export const route: Route = {
                 // 处理链接
                 let absoluteLink = '';
                 if (link) {
-                    if (link.startsWith('http')) {
-                        absoluteLink = link;
-                    } else {
-                        absoluteLink = resolve(baseUrl, link);
-                    }
+                    absoluteLink = link.startsWith('http') ? link : resolve(baseUrl, link);
                 }
 
                 return {
